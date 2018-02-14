@@ -1,0 +1,24 @@
+{
+  "name": "vig/tools-bundle",
+  "type": "library",
+  "description": "Symfony3 tools",
+  "license": "MIT",
+  "keywords": ["tools"],
+  "homepage": "http://videinfra.com",
+  "authors": [
+    {
+      "name": "Igor Lukashov",
+      "email": "igor.lukashov@videinfra.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.1",
+    "symfony/symfony": "~3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "VideInfra\\ToolsBundle\\": "src/"
+    }
+  }
+}

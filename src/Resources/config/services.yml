@@ -1,0 +1,4 @@
+services:
+
+    vig.tools.form.serializer:
+        class: VideInfra\ToolsBundle\Service\FormSerializer
