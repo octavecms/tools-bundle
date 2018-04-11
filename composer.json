@@ -1,14 +1,14 @@
 {
-  "name": "vig/tools-bundle",
+  "name": "octave/tools-bundle",
   "type": "library",
   "description": "Symfony3 tools",
   "license": "MIT",
   "keywords": ["tools"],
-  "homepage": "http://videinfra.com",
+  "homepage": "http://octavecms.com",
   "authors": [
     {
       "name": "Igor Lukashov",
-      "email": "igor.lukashov@videinfra.com",
+      "email": "igor.lukashov@octavecms.com",
       "role": "Developer"
     }
   ],
@@ -18,7 +18,7 @@
   },
   "autoload": {
     "psr-4": {
-      "VideInfra\\ToolsBundle\\": "src/"
+      "Octave\\ToolsBundle\\": "src/"
     }
   }
 }

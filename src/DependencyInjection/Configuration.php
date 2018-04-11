@@ -1,6 +1,6 @@
 <?php
 
-namespace VideInfra\ToolsBundle\DependencyInjection;
+namespace Octave\ToolsBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

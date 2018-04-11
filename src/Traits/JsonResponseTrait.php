@@ -1,14 +1,14 @@
 <?php
 
-namespace VideInfra\ToolsBundle\Traits;
+namespace Octave\ToolsBundle\Traits;
 
-use VideInfra\ToolsBundle\Service\FormSerializer;
+use Octave\ToolsBundle\Service\FormSerializer;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class JsonResponseTrait
- * @author Igor Lukashov <igor.lukashov@videinfra.com>
+ * @author Igor Lukashov <igor.lukashov@octavecms.com>
  */
 trait JsonResponseTrait
 {
@@ -21,7 +21,7 @@ trait JsonResponseTrait
     protected function generateResponse(FormInterface $form = null, bool $customStatus = true, array $customError = [])
     {
         /** @var FormSerializer $serializer */
-        $serializer = $this->get('vig.tools.form.serializer');
+        $serializer = $this->get('octave.tools.form.serializer');
         $response = new JsonResponse();
 
         $data = $serializer->serialize($form, $customStatus, $customError);

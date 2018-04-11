@@ -1,13 +1,13 @@
 <?php
 
-namespace VideInfra\ToolsBundle\Service;
+namespace Octave\ToolsBundle\Service;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 
 /**
  * Class FormSerializer
- * @author Igor Lukashov <igor.lukashov@videinfra.com>
+ * @author Igor Lukashov <igor.lukashov@octavecms.com>
  */
 class FormSerializer
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace VideInfra\ToolsBundle\Composer;
+namespace Octave\ToolsBundle\Composer;
 
 use Composer\Script\Event;
 use Symfony\Component\Yaml\Parser;
@@ -9,7 +9,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class ScriptHandler
  * @package RequestBundle\Composer
- * @author Igor Lukashov <igor.lukashov@videinfra.com>
+ * @author Igor Lukashov <igor.lukashov@octavecms.com>
  */
 class ScriptHandler
 {

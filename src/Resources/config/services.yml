@@ -1,4 +1,4 @@
 services:
 
-    vig.tools.form.serializer:
-        class: VideInfra\ToolsBundle\Service\FormSerializer
+    octave.tools.form.serializer:
+        class: Octave\ToolsBundle\Service\FormSerializer
