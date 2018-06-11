@@ -21,5 +21,10 @@ class OctaveToolsExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter('octave.tools.recaptcha_secret', $config['recaptcha_secret'] ?? null);
     }
 }

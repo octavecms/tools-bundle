@@ -20,6 +20,11 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('vide_infra_tools');
 
+        $rootNode
+            ->children()
+                ->scalarNode('recaptcha_secret')->end()
+            ->end;
+
         return $treeBuilder;
     }
 }

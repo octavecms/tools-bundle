@@ -2,3 +2,8 @@ services:
 
     octave.tools.form.serializer:
         class: Octave\ToolsBundle\Service\FormSerializer
+
+    octave.tools.recaptcha.checker:
+        class: Octave\ToolsBundle\Util\RecaptchaChecker
+        arguments:
+            - '%octave.tools.recaptcha_secret%'
