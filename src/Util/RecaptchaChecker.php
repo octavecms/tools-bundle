@@ -25,8 +25,7 @@ class RecaptchaChecker
         $post_data = http_build_query(
             array(
                 'secret' => $this->secret,
-                'response' => $response,
-                'remoteip' => $_SERVER['REMOTE_ADDR']
+                'response' => $response
             )
         );
         $opts = array('http' =>
