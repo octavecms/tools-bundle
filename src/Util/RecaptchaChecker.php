@@ -39,6 +39,12 @@ class RecaptchaChecker
         $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
         $result = json_decode($response);
 
-        return $result->success;
+        if (isset($result->score)) {
+            // Recaptcha V3
+            return $result->success && $result->score > 0.5;
+        } else {
+            // Recaptcha V2
+            return $result->success;
+        }
     }
 }
