@@ -17,14 +17,28 @@ class RecaptchaChecker
     }
 
     /**
+     * @param string $secret
+     */
+    public function setSecret($secret)
+    {
+        $this->secret = $secret;
+    }
+
+
+    /**
      * @param $response
+     * @param null $secret
      * @return mixed
      */
-    public function verify($response)
+    public function verify($response, $secret = null)
     {
+        if ($secret) {
+            $secret = $this->secret;
+        }
+
         $post_data = http_build_query(
             array(
-                'secret' => $this->secret,
+                'secret' => $secret,
                 'response' => $response
             )
         );
