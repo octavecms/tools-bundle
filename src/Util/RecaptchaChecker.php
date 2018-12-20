@@ -32,7 +32,7 @@ class RecaptchaChecker
      */
     public function verify($response, $secret = null)
     {
-        if ($secret) {
+        if (!$secret) {
             $secret = $this->secret;
         }
 
