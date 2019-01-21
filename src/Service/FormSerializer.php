@@ -2,8 +2,8 @@
 
 namespace Octave\ToolsBundle\Service;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Class FormSerializer
@@ -12,12 +12,12 @@ use Symfony\Component\Form\FormError;
 class FormSerializer
 {
     /**
-     * @param Form|null $form
+     * @param FormInterface|null $form
      * @param bool $customStatus
      * @param array $customError
      * @return array
      */
-    public function serialize(Form $form = null, bool $customStatus = true, array $customError = [])
+    public function serialize(FormInterface $form = null, bool $customStatus = true, array $customError = [])
     {
         $result = [
             'status' => $customStatus,

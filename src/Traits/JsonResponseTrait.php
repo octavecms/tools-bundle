@@ -16,15 +16,19 @@ trait JsonResponseTrait
      * @param FormInterface|null $form
      * @param bool $customStatus
      * @param array $customError
+     * @param array $customData
      * @return JsonResponse
      */
-    protected function generateResponse(FormInterface $form = null, bool $customStatus = true, array $customError = [])
+    protected function generateResponse(FormInterface $form = null, bool $customStatus = true, array $customError = [],
+                                        array $customData = [])
     {
         /** @var FormSerializer $serializer */
         $serializer = $this->get('octave.tools.form.serializer');
         $response = new JsonResponse();
 
         $data = $serializer->serialize($form, $customStatus, $customError);
+        $data = array_merge($data, $customData);
+
         return $response->setData($data);
     }
 }
