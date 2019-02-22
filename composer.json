@@ -15,7 +15,7 @@
   "require": {
     "php": ">=7.0.1",
     "symfony/symfony": "~4.0",
-    "vlucas/phpdotenv": "dev-master"
+    "vlucas/phpdotenv": "~3.3"
   },
   "autoload": {
     "psr-4": {
