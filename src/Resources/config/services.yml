@@ -10,5 +10,7 @@ services:
 
     octave.tools.assets.version.command:
         class: Octave\ToolsBundle\Command\ChangeAssetVersionCommand
+        arguments:
+            - '%kernel.project_dir%'
         tags:
             - { name: console.command}

@@ -9,15 +9,57 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ChangeAssetVersionCommand extends Command
 {
+    const KEY = 'ASSETS_VERSION';
+
+    /**
+     * @var string
+     */
     protected static $defaultName = 'octave:tools:assets-version';
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * @var string
+     */
+    private $projectDir;
+
+    /**
+     * ChangeAssetVersionCommand constructor.
+     * @param $rootDir
+     */
+    public function __construct($rootDir)
     {
-        $dotenv = Dotenv::create(__DIR__, 'local');
-        $result = $dotenv->load();
-
-
+        parent::__construct();
+        $this->projectDir = $rootDir;
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|void|null
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $localEnvPath = sprintf('%s/%s', $this->projectDir, '.env.local');
 
+        if (file_exists($localEnvPath)) {
+
+            $dotenv = Dotenv::create($this->projectDir , '.env.local');
+            $parameters = $dotenv->load();
+
+            $parameters[self::KEY] = time();
+        }
+        else {
+
+            $parameters = [
+                self::KEY => time()
+            ];
+        }
+
+        $output = [];
+
+        foreach ($parameters as $name => $value) {
+            $output[] = sprintf('%s=%s', $name, $value);
+        }
+
+        file_put_contents($localEnvPath, implode(PHP_EOL, $output));
+    }
 }
