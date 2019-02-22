@@ -9,7 +9,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ChangeAssetVersionCommand extends Command
 {
-    protected static $defaultName = 'octave:tools:assets-version';
+    protected function configure()
+    {
+        $this->setName('octave:tools:assets-version');
+    }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
