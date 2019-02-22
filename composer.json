@@ -1,6 +1,6 @@
 {
   "name": "octave/tools-bundle",
-  "type": "library",
+  "type": "symfony-bundle",
   "description": "Symfony3 tools",
   "license": "MIT",
   "keywords": ["tools"],
