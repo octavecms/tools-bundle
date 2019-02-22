@@ -7,3 +7,8 @@ services:
         class: Octave\ToolsBundle\Util\RecaptchaChecker
         arguments:
             - '%octave.tools.recaptcha_secret%'
+
+    octave.tools.assets.version.command:
+        class: Octave\Command\ChangeAssetVersionCommand
+        tags:
+            - { name: console.command}
