@@ -2,11 +2,13 @@ services:
 
     octave.tools.form.serializer:
         class: Octave\ToolsBundle\Service\FormSerializer
+        public: true
 
     octave.tools.recaptcha.checker:
         class: Octave\ToolsBundle\Util\RecaptchaChecker
         arguments:
             - '%octave.tools.recaptcha_secret%'
+        public: true
 
     octave.tools.assets.version.command:
         class: Octave\ToolsBundle\Command\ChangeAssetVersionCommand
@@ -14,3 +16,4 @@ services:
             - '%kernel.project_dir%'
         tags:
             - { name: console.command}
+        public: true
