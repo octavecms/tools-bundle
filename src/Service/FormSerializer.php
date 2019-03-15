@@ -41,7 +41,7 @@ class FormSerializer
                 ];
             }
 
-            if (!$form->isValid()) {
+            if ($form->isSubmitted() && !$form->isValid()) {
                 $result['status'] = false;
             }
         }
