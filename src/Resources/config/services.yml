@@ -9,7 +9,6 @@ services:
         public: true
         arguments:
             - '%octave.tools.recaptcha_secret%'
-        public: true
 
     octave.tools.assets.version.command:
         class: Octave\ToolsBundle\Command\ChangeAssetVersionCommand
