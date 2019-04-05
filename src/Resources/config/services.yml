@@ -2,7 +2,10 @@ services:
 
     octave.tools.form.serializer:
         class: Octave\ToolsBundle\Service\FormSerializer
-        alias: Octave\ToolsBundle\Service\FormSerializer
+        public: true
+
+    Octave\ToolsBundle\Service\FormSerializer:
+        alias: octave.tools.form.serializer
         public: true
 
     octave.tools.recaptcha.checker:
