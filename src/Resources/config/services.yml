@@ -14,6 +14,10 @@ services:
         arguments:
             - '%octave.tools.recaptcha_secret%'
 
+    Octave\ToolsBundle\Util\RecaptchaChecker:
+        alias: octave.tools.recaptcha.checker
+        public: true
+
     octave.tools.assets.version.command:
         class: Octave\ToolsBundle\Command\ChangeAssetVersionCommand
         arguments:
