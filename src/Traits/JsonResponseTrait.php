@@ -31,4 +31,24 @@ trait JsonResponseTrait
 
         return $response->setData($data);
     }
+
+    /**
+     * @param FormSerializer $serializer
+     * @param FormInterface|null $form
+     * @param bool $customStatus
+     * @param array $customError
+     * @param array $customData
+     * @return JsonResponse
+     */
+    protected function generateResponseWithSerializer(FormSerializer $serializer, FormInterface $form = null,
+                                                      bool $customStatus = true, array $customError = [],
+                                                      array $customData = [])
+    {
+        $response = new JsonResponse();
+
+        $data = $serializer->serialize($form, $customStatus, $customError);
+        $data = array_merge($data, $customData);
+
+        return $response->setData($data);
+    }
 }
