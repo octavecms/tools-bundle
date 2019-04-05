@@ -2,9 +2,11 @@ services:
 
     octave.tools.form.serializer:
         class: Octave\ToolsBundle\Service\FormSerializer
+        public: true
 
     octave.tools.recaptcha.checker:
         class: Octave\ToolsBundle\Util\RecaptchaChecker
+        public: true
         arguments:
             - '%octave.tools.recaptcha_secret%'
 
