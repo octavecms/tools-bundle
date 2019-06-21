@@ -57,7 +57,12 @@ class ChangeAssetVersionCommand extends Command
         $output = [];
 
         foreach ($parameters as $name => $value) {
-            $output[] = sprintf('%s=%s', $name, $value);
+            if (strpos($value, ' ') !== false) {
+                $output[] = sprintf("%s='%s'", $name, $value);
+            }
+            else {
+                $output[] = sprintf('%s=%s', $name, $value);
+            }
         }
 
         file_put_contents($localEnvPath, implode(PHP_EOL, $output));
