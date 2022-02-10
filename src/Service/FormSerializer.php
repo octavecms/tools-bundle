@@ -31,7 +31,7 @@ class FormSerializer
 
                 if ($error->getOrigin()->getParent() &&
                     $error->getOrigin()->getParent()->getConfig()->getType()->getInnerType() instanceof RepeatedType) {
-                    $name = $error->getOrigin()->getParent()->getName() . '[' . $name . ']';
+                    $name = $error->getOrigin()->getParent()->getParent()->getName() . '[' . $error->getOrigin()->getParent()->getName() . ']'.'[' . $name . ']';
                 }
 
                 /** @var FormError $error */
