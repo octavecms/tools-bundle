@@ -29,6 +29,16 @@ class FormSerializer
 
                 $name = $error->getOrigin()->getConfig()->getName();
 
+                if ($error->getOrigin()->getParent()) {
+
+                    if ($error->getOrigin()->getParent()->getParent()) {
+                        $name = $error->getOrigin()->getParent()->getParent()->getName() . '[' . $error->getOrigin()->getParent()->getName() . ']'.'[' . $name . ']';
+                    }
+                    else {
+                        $name = $error->getOrigin()->getParent()->getName() . '[' . $error->getOrigin()->getParent()->getName() . ']'.'[' . $name . ']';
+                    }
+                }
+
                 if ($error->getOrigin()->getParent() &&
                     $error->getOrigin()->getParent()->getConfig()->getType()->getInnerType() instanceof RepeatedType) {
                     $name = $error->getOrigin()->getParent()->getParent()->getName() . '[' . $error->getOrigin()->getParent()->getName() . ']'.'[' . $name . ']';
