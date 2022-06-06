@@ -66,5 +66,7 @@ class ChangeAssetVersionCommand extends Command
         }
 
         file_put_contents($localEnvPath, implode(PHP_EOL, $output));
+
+        return 0;
     }
 }
