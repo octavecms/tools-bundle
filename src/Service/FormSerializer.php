@@ -35,7 +35,7 @@ class FormSerializer
                         $name = $error->getOrigin()->getParent()->getParent()->getName() . '[' . $error->getOrigin()->getParent()->getName() . ']'.'[' . $name . ']';
                     }
                     else {
-                        $name = $error->getOrigin()->getParent()->getName() . '[' . $error->getOrigin()->getParent()->getName() . ']'.'[' . $name . ']';
+                        $name = $error->getOrigin()->getParent()->getName() . '[' . $name . ']';
                     }
                 }
 
