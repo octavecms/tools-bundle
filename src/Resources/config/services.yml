@@ -45,4 +45,6 @@ services:
             - '@router'
             - '%locale%'
             - '%kernel.environment%'
+        tags:
+            - {name: kernel.event_subscriber}
 

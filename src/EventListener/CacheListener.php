@@ -72,6 +72,9 @@ class CacheListener implements EventSubscriberInterface
 
         if ($this->redisHelper->get($hash, $key)) {
             $response = new Response();
+            $response->headers->add([
+                'X-Octave-Cache' => 'HIT',
+            ]);
             $response->setContent($this->redisHelper->get($hash, $key));
 
             $event->setResponse($response);

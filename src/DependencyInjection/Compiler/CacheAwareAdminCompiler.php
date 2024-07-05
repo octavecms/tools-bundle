@@ -15,8 +15,11 @@ class CacheAwareAdminCompiler implements CompilerPassInterface
         $admins = $container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG);
         foreach ($admins as $id => $tags) {
             $definition = $container->getDefinition($id);
-            if ($definition->getClass() instanceof CacheAwareAdminInterface) {
-                $definition->setMethodCalls('setRedisHelper', new Reference('octave.redis.helper'));
+
+            $class = $definition->getClass();
+
+            if (class_exists($class) && new $class() instanceof CacheAwareAdminInterface) {
+                $definition->addMethodCall('setRedisHelper', [new Reference('octave.redis.helper')]);
             }
         }
     }
