@@ -5,7 +5,7 @@ namespace Octave\ToolsBundle\Admin;
 use Octave\ToolsBundle\Util\RedisHelper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-class CacheAwareAdmin extends AbstractAdmin
+class CacheAwareAdmin extends AbstractAdmin implements CacheAwareAdminInterface
 {
     protected array $cacheNames = [];
 
@@ -29,6 +29,11 @@ class CacheAwareAdmin extends AbstractAdmin
     }
 
     protected function postPersist(object $object): void
+    {
+        $this->resetCache();
+    }
+
+    protected function postRemove(object $object): void
     {
         $this->resetCache();
     }
