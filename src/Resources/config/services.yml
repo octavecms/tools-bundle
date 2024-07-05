@@ -1,5 +1,10 @@
 services:
 
+    _defaults:
+        bind:
+            $locale: '%locale%'
+            $env: '%kernel.environment%'
+
     octave.tools.form.serializer:
         class: Octave\ToolsBundle\Service\FormSerializer
         public: true
@@ -25,3 +30,12 @@ services:
         tags:
             - { name: console.command}
         public: true
+
+    Redis:
+        class: Redis
+        calls:
+            - connect:
+                  - '%env(REDIS_HOST)%'
+                  - '%env(int:REDIS_PORT)%'
+
+
