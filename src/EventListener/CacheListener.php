@@ -16,6 +16,7 @@ class CacheListener implements EventSubscriberInterface
 {
     const MODE_PATH = 'path';
     const MODE_QUERY = 'query';
+    const RESET_CACHE = '_cache_remove';
 
     private RedisHelper $redisHelper;
     private RouterInterface $router;
@@ -66,7 +67,7 @@ class CacheListener implements EventSubscriberInterface
         $hash = $options['cache_namespace'] ?? $routeName;
         $key = $this->getCacheKey($request, $options);
 
-        if ($request->get('_cache_remove')) {
+        if ($request->get(self::RESET_CACHE)) {
             $this->redisHelper->set($hash, $key, null);
         }
 
@@ -151,6 +152,10 @@ class CacheListener implements EventSubscriberInterface
                     }
                 }
             } else if ($options['cache_query_exclude'] ?? []) {
+
+                $exclude = $options['cache_query_exclude'] ?? [];
+                $exclude[] = self::RESET_CACHE;
+
                 foreach ($query as $key => $value) {
                     if (!in_array($key, $options['cache_query_exclude'])) {
                         $params[] = sprintf('%s=%s', $key, $value);
@@ -158,7 +163,9 @@ class CacheListener implements EventSubscriberInterface
                 }
             } else {
                 foreach ($query as $key => $value) {
-                    $params[] = sprintf('%s=%s', $key, $value);
+                    if ($key !== self::RESET_CACHE) {
+                        $params[] = sprintf('%s=%s', $key, $value);
+                    }
                 }
             }
 
