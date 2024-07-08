@@ -26,4 +26,9 @@ class RedisHelper
     {
         $this->redis->del($hash);
     }
+
+    public function flushAll()
+    {
+        $this->redis->flushAll();
+    }
 }
