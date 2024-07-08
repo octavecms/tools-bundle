@@ -38,6 +38,9 @@ services:
         arguments:
             - '@Redis'
 
+    Octave\ToolsBundle\Util\RedisHelper:
+        alias: 'octave.redis.helper'
+
     octave.cache.listener:
         class: Octave\ToolsBundle\EventListener\CacheListener
         arguments:
