@@ -150,7 +150,7 @@ class CacheListener implements EventSubscriberInterface
             if ($options['cache_query_include'] ?? []) {
                 foreach ($query as $key => $value) {
                     if (in_array($key, $options['cache_query_include'])) {
-                        $params[] = sprintf('%s=%s', $key, $value);
+                        $params[$key] = $value;
                     }
                 }
             } else if ($options['cache_query_exclude'] ?? []) {
@@ -160,18 +160,18 @@ class CacheListener implements EventSubscriberInterface
 
                 foreach ($query as $key => $value) {
                     if (!in_array($key, $options['cache_query_exclude'])) {
-                        $params[] = sprintf('%s=%s', $key, $value);
+                        $params[$key] = $value;
                     }
                 }
             } else {
                 foreach ($query as $key => $value) {
                     if ($key !== self::RESET_CACHE) {
-                        $params[] = sprintf('%s=%s', $key, $value);
+                        $params[$key] = $value;
                     }
                 }
             }
 
-            $key = md5($path.'?'.implode('&', $params));
+            $key = md5($path.($params ? '?'.http_build_query($params) : ''));
         }
 
         return $key;
