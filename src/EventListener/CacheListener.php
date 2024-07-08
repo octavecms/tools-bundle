@@ -43,9 +43,6 @@ class CacheListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$event->isMainRequest()) {
-            return;
-        }
         $request = $event->getRequest();
 
         if (in_array($request->getMethod(), ['POST', 'PUT'])) {
@@ -95,6 +92,11 @@ class CacheListener implements EventSubscriberInterface
 
         $route = $this->getRoute($request);
         if (!$route) {
+            return;
+        }
+
+        $response = $event->getResponse();
+        if (!$response->isSuccessful()) {
             return;
         }
 
