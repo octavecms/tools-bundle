@@ -35,6 +35,7 @@ services:
 
     octave.redis.helper:
         class: Octave\ToolsBundle\Util\RedisHelper
+        public: false
         arguments:
             - '@Redis'
 
