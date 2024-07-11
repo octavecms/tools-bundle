@@ -26,5 +26,6 @@ class OctaveToolsExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('octave.tools.recaptcha_secret', $config['recaptcha_secret'] ?? null);
+        $container->setParameter('octave.tools.cache_prefix', $config['cache_prefix'] ?? null);
     }
 }
