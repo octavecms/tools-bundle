@@ -23,17 +23,17 @@ class CacheAwareAdmin extends AbstractAdmin implements CacheAwareAdminInterface
         }
     }
 
-    public function postUpdate(object $object)
+    public function postUpdate($object)
     {
         $this->resetCache();
     }
 
-    public function postPersist(object $object)
+    public function postPersist($object)
     {
         $this->resetCache();
     }
 
-    public function postRemove(object $object)
+    public function postRemove($object)
     {
         $this->resetCache();
     }
