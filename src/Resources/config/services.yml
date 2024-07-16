@@ -38,6 +38,7 @@ services:
         public: true
         arguments:
             - '@Redis'
+            - '%octave.tools.cache_prefix%'
 
     Octave\ToolsBundle\Util\RedisHelper:
         alias: 'octave.redis.helper'
@@ -49,6 +50,7 @@ services:
             - '@router'
             - '%locale%'
             - '%kernel.environment%'
+            - '%octave.tools.cache_prefix%'
         tags:
             - {name: kernel.event_subscriber}
 

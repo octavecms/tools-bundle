@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('recaptcha_secret')->end()
+                ->scalarNode('cache_prefix')->end()
             ->end();
 
         return $treeBuilder;

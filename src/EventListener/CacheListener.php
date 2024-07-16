@@ -22,6 +22,7 @@ class CacheListener implements EventSubscriberInterface
     private RouterInterface $router;
     private string $locale;
     private string $env;
+    private string $cachePrefix;
     private bool $enabledDefault = false;
 
     public function __construct(
@@ -29,12 +30,15 @@ class CacheListener implements EventSubscriberInterface
         RouterInterface $router,
         string $locale,
         string $env,
+        string $cachePrefix,
     )
     {
         $this->redisHelper = $redisHelper;
         $this->router = $router;
         $this->locale = $locale;
         $this->env = $env;
+        $this->cachePrefix = $cachePrefix;
+
     }
 
     public function onKernelRequest(RequestEvent $event): void
