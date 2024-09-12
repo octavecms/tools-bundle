@@ -26,6 +26,14 @@ services:
             - { name: console.command}
         public: true
 
+    octave.tools.clear.cache:
+        class: Octave\ToolsBundle\Command\ClearRedisCacheCommand
+        arguments:
+            - '@octave.redis.helper'
+        tags:
+            - { name: console.command }
+        public: true
+
     Redis:
         class: Redis
         calls:
