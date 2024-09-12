@@ -16,6 +16,7 @@ class ClearRedisCacheCommand extends Command
     public function __construct(RedisHelper $redisHelper)
     {
         $this->redisHelper = $redisHelper;
+        parent::__construct();
     }
 
     protected function configure(): void
