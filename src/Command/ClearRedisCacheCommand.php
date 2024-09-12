@@ -29,6 +29,6 @@ class ClearRedisCacheCommand extends Command
         $this->redisHelper->flushAll();
         $output->writeln('<info>Clearing cache completed.</info>');
 
-        return Command::SUCCESS;
+        return 0;
     }
 }
