@@ -1,0 +1,36 @@
+services:
+  Redis:
+    class: Redis
+    calls:
+      - connect:
+          - '%env(REDIS_HOST)%'
+          - '%env(int:REDIS_PORT)%'
+  
+  octave.tools.redis.helper:
+    class: Octave\ToolsBundle\Util\RedisHelper
+    public: true
+    arguments:
+      - '@Redis'
+      - '%octave.tools.cache_prefix%'
+        
+  octave.tools.clear.cache:
+    class: Octave\ToolsBundle\Command\ClearRedisCacheCommand
+    arguments:
+      - '@octave.tools.redis.helper'
+    tags:
+      - { name: console.command }
+    public: true
+      
+  Octave\ToolsBundle\Util\RedisHelper:
+    alias: 'octave.tools.redis.helper'
+  
+  octave.cache.listener:
+    class: Octave\ToolsBundle\EventListener\CacheListener
+    arguments:
+      - '@octave.tools.redis.helper'
+      - '@router'
+      - '%locale%'
+      - '%kernel.environment%'
+      - '%octave.tools.cache_prefix%'
+    tags:
+      - {name: kernel.event_subscriber}
