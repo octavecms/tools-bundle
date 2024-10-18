@@ -29,6 +29,7 @@ services:
     arguments:
       - '@octave.tools.redis.helper'
       - '@router'
+      - '@mobile_detect.mobile_detector'
       - '%locale%'
       - '%kernel.environment%'
       - '%octave.tools.cache_prefix%'
