@@ -3,6 +3,7 @@
 namespace Octave\ToolsBundle\EventListener;
 
 use Octave\ToolsBundle\Util\RedisHelper;
+use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,7 @@ class CacheListener implements EventSubscriberInterface
 
     private RedisHelper $redisHelper;
     private RouterInterface $router;
+    private MobileDetector $mobileDetector;
     private string $locale;
     private string $env;
     private string $cachePrefix;
@@ -28,6 +30,7 @@ class CacheListener implements EventSubscriberInterface
     public function __construct(
         RedisHelper $redisHelper,
         RouterInterface $router,
+        MobileDetector $mobileDetector,
         string $locale,
         string $env,
         string $cachePrefix
@@ -35,6 +38,7 @@ class CacheListener implements EventSubscriberInterface
     {
         $this->redisHelper = $redisHelper;
         $this->router = $router;
+        $this->mobileDetector = $mobileDetector;
         $this->locale = $locale;
         $this->env = $env;
         $this->cachePrefix = $cachePrefix;
@@ -141,10 +145,12 @@ class CacheListener implements EventSubscriberInterface
 
     private function getCacheKey(Request $request, array $options): string
     {
+        $isMobile = $this->mobileDetector->isMobile() ? '_mobile' : '';
+
         $mode = $options['cache_mode'] ?? self::MODE_QUERY;
 
         if ($mode === self::MODE_PATH) {
-            $key = md5($request->getPathInfo());
+            $key = md5($request->getPathInfo() . $isMobile);
         } else {
             $path = $request->getPathInfo();
             $query = $request->query->all();
@@ -174,7 +180,7 @@ class CacheListener implements EventSubscriberInterface
                 }
             }
 
-            $key = md5($path.($params ? '?'.http_build_query($params) : ''));
+            $key = md5($path.$isMobile.($params ? '?'.http_build_query($params) : ''));
         }
 
         return $key;
