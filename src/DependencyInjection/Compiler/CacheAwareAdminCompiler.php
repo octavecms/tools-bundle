@@ -12,6 +12,10 @@ class CacheAwareAdminCompiler implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+        if (!class_exists(TaggedAdminInterface::class)) {
+            return;
+        }
+
         $admins = $container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG);
         foreach ($admins as $id => $tags) {
             $definition = $container->getDefinition($id);
