@@ -30,7 +30,7 @@ class RecaptchaChecker
      * @param null $secret
      * @return mixed
      */
-    public function verify($response, $secret = null)
+    public function verify($response, $secret = null, bool $returnResult = false)
     {
         if (!$secret) {
             $secret = $this->secret;
@@ -54,6 +54,11 @@ class RecaptchaChecker
         $result = json_decode($response);
 
         if (isset($result->score)) {
+
+            if ($returnResult) {
+                return $result;
+            }
+
             // Recaptcha V3
             return $result->success && $result->score > 0.5;
         } else {
