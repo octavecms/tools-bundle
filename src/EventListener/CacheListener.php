@@ -3,7 +3,6 @@
 namespace Octave\ToolsBundle\EventListener;
 
 use Octave\ToolsBundle\Util\RedisHelper;
-use MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +20,7 @@ class CacheListener implements EventSubscriberInterface
 
     private RedisHelper $redisHelper;
     private RouterInterface $router;
-    private MobileDetector $mobileDetector;
+    private $mobileDetector;
     private string $locale;
     private string $env;
     private string $cachePrefix;
@@ -30,7 +29,6 @@ class CacheListener implements EventSubscriberInterface
     public function __construct(
         RedisHelper $redisHelper,
         RouterInterface $router,
-        MobileDetector $mobileDetector,
         string $locale,
         string $env,
         string $cachePrefix
@@ -38,10 +36,14 @@ class CacheListener implements EventSubscriberInterface
     {
         $this->redisHelper = $redisHelper;
         $this->router = $router;
-        $this->mobileDetector = $mobileDetector;
         $this->locale = $locale;
         $this->env = $env;
         $this->cachePrefix = $cachePrefix;
+    }
+
+    public function setMobileDetector($mobileDetector): void
+    {
+        $this->mobileDetector = $mobileDetector;
     }
 
     public function onKernelRequest(RequestEvent $event): void
@@ -145,7 +147,7 @@ class CacheListener implements EventSubscriberInterface
 
     private function getCacheKey(Request $request, array $options): string
     {
-        $isMobile = $this->mobileDetector->isMobile() ? '_mobile' : '';
+        $isMobile = $this->mobileDetector && $this->mobileDetector->isMobile() ? '_mobile' : '';
 
         $mode = $options['cache_mode'] ?? self::MODE_QUERY;
 
