@@ -6,5 +6,5 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface CacheExtensionInterface
 {
-    public function apply(string $key, array $options, Request $request): void;
+    public function apply(string &$key, array $options, Request $request): void;
 }
