@@ -3,7 +3,7 @@
 namespace Octave\ToolsBundle\EventListener;
 
 use Octave\ToolsBundle\Util\RedisHelper;
-use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
+use MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
