@@ -3,6 +3,7 @@
 namespace Octave\ToolsBundle\EventListener;
 
 use Octave\ToolsBundle\Util\RedisHelper;
+use Octave\ToolsBundle\Model\CacheExtensionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,11 +21,11 @@ class CacheListener implements EventSubscriberInterface
 
     private RedisHelper $redisHelper;
     private RouterInterface $router;
-    private $mobileDetector;
     private string $locale;
     private string $env;
     private string $cachePrefix;
     private bool $enabledDefault = false;
+    private array $extensions = [];
 
     public function __construct(
         RedisHelper $redisHelper,
@@ -44,6 +45,11 @@ class CacheListener implements EventSubscriberInterface
     public function setMobileDetector($mobileDetector): void
     {
         $this->mobileDetector = $mobileDetector;
+    }
+
+    public function addExtension(CacheExtensionInterface $extension): void
+    {
+        $this->extensions[] = $extension;
     }
 
     public function onKernelRequest(RequestEvent $event): void
@@ -183,6 +189,10 @@ class CacheListener implements EventSubscriberInterface
             }
 
             $key = md5($path.$isMobile.($params ? '?'.http_build_query($params) : ''));
+        }
+
+        foreach ($this->extensions as $extension) {
+            $extension->apply($key, $options, $request);
         }
 
         return $key;
