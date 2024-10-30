@@ -25,6 +25,7 @@ class CacheListener implements EventSubscriberInterface
     private string $env;
     private string $cachePrefix;
     private bool $enabledDefault = false;
+    private $mobileDetector;
     private array $extensions = [];
 
     public function __construct(
