@@ -10,6 +10,10 @@ class MobileDetectCompiler implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+        if (!$container->has('octave.cache.listener')) {
+            return;
+        }
+
         $definition = $container->getDefinition('octave.cache.listener');
         if ($container->hasAlias('mobile_detect.mobile_detector')) {
             $definition->addMethodCall('setMobileDetector', [new Reference('mobile_detect.mobile_detector')]);
