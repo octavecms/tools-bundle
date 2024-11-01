@@ -81,15 +81,57 @@ class CacheListener implements EventSubscriberInterface
         $key = $this->getCacheKey($request, $options);
 
         if ($request->get(self::RESET_CACHE)) {
-            $this->redisHelper->set($hash, $key, null);
+            $cacheData = $this->redisHelper->get($hash, $key);
+            if (!is_array($cacheData)) {
+                $cacheData = [
+                    'content' => null,
+                    'expired' => false,
+                    'count' => 0,
+                    'url' => $request->getUri(),
+                ];
+            }
+
+            if (!array_key_exists('content', $cacheData) || !array_key_exists('expired', $cacheData) || !array_key_exists('count', $cacheData) || !array_key_exists('url', $cacheData)) {
+                $cacheData = [
+                    'content' => null,
+                    'expired' => false,
+                    'count' => 0,
+                    'url' => $request->getUri(),
+                ];
+            }
+
+            $cacheData['content'] = null;
+
+            $this->redisHelper->set($hash, $key, $cacheData);
         }
 
-        if ($this->redisHelper->get($hash, $key)) {
+        $cacheData = $this->redisHelper->get($hash, $key);
+        if (!is_array($cacheData)) {
+            $cacheData = [
+                'content' => $cacheData,
+                'expired' => false,
+                'count' => 0,
+                'url' => $request->getUri(),
+            ];
+        }
+
+        if (!array_key_exists('content', $cacheData) || !array_key_exists('expired', $cacheData) || !array_key_exists('count', $cacheData) || !array_key_exists('url', $cacheData)) {
+            $cacheData = [
+                'content' => null,
+                'expired' => false,
+                'count' => 0,
+                'url' => $request->getUri(),
+            ];
+        }
+
+        if ($cacheData['content']) {
+            $cacheData['count']++;
+
             $response = new Response();
             $response->headers->add([
                 'X-Octave-Cache' => 'HIT',
             ]);
-            $response->setContent($this->redisHelper->get($hash, $key));
+            $response->setContent($cacheData['content']);
 
             $event->setResponse($response);
         }
@@ -126,7 +168,42 @@ class CacheListener implements EventSubscriberInterface
         $hash = $options['cache_namespace'] ?? $routeName;
         $key = $this->getCacheKey($request, $options);
 
-        $this->redisHelper->set($hash, $key, $event->getResponse()->getContent());
+        $cacheData = $this->redisHelper->get($hash, $key);
+
+        if ($cacheData) {
+            if (!is_array($cacheData)) {
+                $cacheData = [
+                    'content' => $cacheData,
+                    'expired' => false,
+                    'count' => 0,
+                    'url' => $request->getUri(),
+                ];
+            }
+
+            if (!array_key_exists('content', $cacheData) || !array_key_exists('expired', $cacheData) || !array_key_exists('count', $cacheData) || !array_key_exists('url', $cacheData)) {
+                $cacheData = [
+                    'content' => null,
+                    'expired' => false,
+                    'count' => 0,
+                    'url' => $request->getUri(),
+                ];
+            }
+
+            if (null === $cacheData['content']) {
+                $cacheData['content'] = $event->getResponse()->getContent();
+            }
+
+            $cacheData['count']++;
+        } else {
+            $cacheData = [
+                'content' => $event->getResponse()->getContent(),
+                'expired' => false,
+                'count' => 0,
+                'url' => $request->getUri(),
+            ];
+        }
+
+        $this->redisHelper->set($hash, $key, $cacheData);
     }
 
     public static function getSubscribedEvents(): array
