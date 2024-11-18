@@ -20,7 +20,16 @@ services:
     tags:
       - { name: console.command }
     public: true
-      
+
+  octave.tools.warm-up.cache:
+    class: Octave\ToolsBundle\Command\RedisCacheWarmUpCommand
+    arguments:
+      - '@octave.tools.redis.helper'
+      - '@http_client'
+    tags:
+      - { name: console.command }
+    public: true
+
   Octave\ToolsBundle\Util\RedisHelper:
     alias: 'octave.tools.redis.helper'
   

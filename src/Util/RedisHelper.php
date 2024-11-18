@@ -13,27 +13,52 @@ class RedisHelper
         $this->cachePrefix = $cachePrefix;
     }
 
-    public function get(string $hash, string $key)
+    public function get(string $hash, string $key, bool $usePrefix = true)
     {
-        $cache = $this->redis->hGet($this->cachePrefix . ': ' . $hash, $key);
+        if ($usePrefix) {
+            $hash = $this->cachePrefix . ':' . $hash;
+        }
+
+        $cache = $this->redis->hGet($hash, $key);
         return $cache ? json_decode($cache, true): null;
     }
 
-    public function set(string $hash, string $key, $value): void
+    public function set(string $hash, string $key, $value, bool $usePrefix = true): void
     {
-        $this->redis->hSet($this->cachePrefix . ': ' . $hash, $key, json_encode($value));
+        if ($usePrefix) {
+            $hash = $this->cachePrefix . ':' . $hash;
+        }
+
+        $this->redis->hSet($hash, $key, json_encode($value));
     }
 
     public function remove(string $hash)
     {
-        $this->redis->del($this->cachePrefix . ': ' . $hash);
+        $keys = $this->getKeysByHash($hash);
+        foreach ($keys as $key => $value) {
+            $cacheData = json_decode($value, true);
+            $cacheData['expired'] = true;
+            $this->set($hash, $key, $cacheData, false);
+        }
+    }
+    public function flushAll($force = false)
+    {
+        foreach ($this->getAll() as $hash) {
+            if ($force) {
+                $this->redis->del($hash);
+            } else {
+                $this->remove($hash);
+            }
+        }
     }
 
-    public function flushAll()
+    public function getKeysByHash(string $hash)
     {
-        $cache = $this->redis->keys($this->cachePrefix . '*');
-        foreach ($cache as $hash) {
-            $this->redis->del($hash);
-        }
+        return $this->redis->hGetAll($hash);
+    }
+
+    public function getAll()
+    {
+        return $this->redis->keys($this->cachePrefix . '*');
     }
 }
