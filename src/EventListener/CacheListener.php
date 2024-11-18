@@ -231,7 +231,12 @@ class CacheListener implements EventSubscriberInterface
 
     private function getCacheKey(Request $request, array $options): string
     {
+        $mobileCache = $options['mobile_cache'] ?? true;
         $isMobile = $this->mobileDetector && $this->mobileDetector->isMobile() ? '_mobile' : '';
+
+        if (!$mobileCache && $isMobile) {
+            $isMobile = '';
+        }
 
         $mode = $options['cache_mode'] ?? self::MODE_QUERY;
 
