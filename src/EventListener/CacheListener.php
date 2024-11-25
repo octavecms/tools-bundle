@@ -130,6 +130,7 @@ class CacheListener implements EventSubscriberInterface
             $response = new Response();
             $response->headers->add([
                 'X-Octave-Cache' => 'HIT',
+                'X-Octave-Cache-Key' => $hash,
             ]);
             $response->setContent($cacheData['content']);
 
