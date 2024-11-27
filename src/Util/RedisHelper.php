@@ -32,13 +32,17 @@ class RedisHelper
         $this->redis->hSet($hash, $key, json_encode($value));
     }
 
-    public function remove(string $hash)
+    public function remove(string $hash, $usePrefix = false)
     {
+        if ($usePrefix) {
+            $hash = $this->cachePrefix . ':' . $hash;
+        }
+
         $keys = $this->getKeysByHash($hash);
         foreach ($keys as $key => $value) {
             $cacheData = json_decode($value, true);
             $cacheData['expired'] = true;
-            $this->set($hash, $key, $cacheData, false);
+            $this->set($hash, $key, $cacheData, $usePrefix);
         }
     }
 
