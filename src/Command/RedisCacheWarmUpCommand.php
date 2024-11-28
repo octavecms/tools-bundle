@@ -5,6 +5,7 @@ namespace Octave\ToolsBundle\Command;
 use Octave\ToolsBundle\EventListener\CacheListener;
 use Octave\ToolsBundle\Util\RedisHelper;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,6 +13,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class RedisCacheWarmUpCommand extends Command
 {
+    use LockableTrait;
+
     protected static $defaultName = 'octave:tools:cache-warm-up';
 
     private RedisHelper $redisHelper;
@@ -32,6 +35,12 @@ class RedisCacheWarmUpCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$this->lock()) {
+            $output->writeln('The command is already running in another process.');
+
+            return 0;
+        }
+
         $minCount = $input->getArgument('minCount');
 
         $hashes = $this->redisHelper->getAll();
@@ -84,6 +93,8 @@ class RedisCacheWarmUpCommand extends Command
         }
 
         $output->writeln('<info>Warm-up cache completed.</info>');
+
+        $this->release();
 
         return 0;
     }
