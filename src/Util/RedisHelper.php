@@ -42,7 +42,7 @@ class RedisHelper
         foreach ($keys as $key => $value) {
             $cacheData = json_decode($value, true);
             $cacheData['expired'] = true;
-            $this->set($hash, $key, $cacheData, $usePrefix);
+            $this->set($hash, $key, $cacheData, false);
         }
     }
 
