@@ -19,7 +19,7 @@ class CacheAwareAdmin extends AbstractAdmin implements CacheAwareAdminInterface
     protected function resetCache(): void
     {
         foreach ($this->cacheNames as $name) {
-            $this->redisHelper->remove($name);
+            $this->redisHelper->remove($name, true);
         }
     }
 
