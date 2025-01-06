@@ -122,9 +122,14 @@ class CacheListener implements EventSubscriberInterface
             $cacheData['count']++;
 
             $response = new Response();
-            $response->headers->add([
-                'X-Octave-Cache' => 'HIT',
-            ]);
+            $headers = ['X-Octave-Cache' => 'HIT'];
+
+            if ($cacheData['expired']) {
+                $headers['X-Octave-Expired'] = '1';
+            }
+
+            $response->headers->add($headers);
+
             $response->setContent($cacheData['content']);
 
             $event->setResponse($response);
