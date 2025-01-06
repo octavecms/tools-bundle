@@ -41,6 +41,7 @@ class RedisHelper
         $keys = $this->getKeysByHash($hash);
         foreach ($keys as $key => $value) {
             $cacheData = json_decode($value, true);
+            $cacheData = is_array($cacheData) ? $cacheData : [];
             $cacheData['expired'] = true;
             $this->set($hash, $key, $cacheData, false);
         }
