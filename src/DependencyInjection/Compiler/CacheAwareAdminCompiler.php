@@ -12,7 +12,7 @@ class CacheAwareAdminCompiler implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!class_exists(TaggedAdminInterface::class)) {
+        if (!interface_exists(TaggedAdminInterface::class)) {
             return;
         }
 
