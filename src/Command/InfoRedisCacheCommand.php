@@ -32,7 +32,7 @@ class InfoRedisCacheCommand extends Command
         $hash = $input->getArgument('hash');
         $key = $input->getArgument('key');
 
-        $keys = $key ? [$key] : $this->redisHelper->getKeysByHash($hash);
+        $keys = $key ? [$key] : $this->redisHelper->getKeysByHash($hash, true);
         if (empty($keys)) {
             $output->writeln('<error>No cache keys found.</error>');
         }
