@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class RedisCacheWarmUpCommand extends Command
+class WarmUpRedisCacheCommand extends Command
 {
     protected static $defaultName = 'octave:tools:cache-warm-up';
 
