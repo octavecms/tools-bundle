@@ -39,13 +39,16 @@ class InfoRedisCacheCommand extends Command
 
         foreach ($keys as $key) {
             $cache = $this->redisHelper->get($hash, $key);
+            if ($cache) {
+                $output->writeln(sprintf('Hash: <info>%s</info>, Key: <info>%s</info>', $hash, $key));
+                $output->writeln(sprintf('Expired: <info>%s</info>', $cache['expired']));
+                $output->writeln(sprintf('Count: <info>%s</info>', $cache['count']));
+                $output->writeln(sprintf('Length: <info>%s</info>', strlen($cache['content'])));
 
-            $output->writeln(sprintf('Hash: <info>%s</info>, Key: <info>%s</info>', $hash, $key));
-            $output->writeln(sprintf('Expired: <info>%s</info>', $cache['expired']));
-            $output->writeln(sprintf('Count: <info>%s</info>', $cache['count']));
-            $output->writeln(sprintf('Length: <info>%s</info>', strlen($cache['content'])));
-
-            $output->writeln('----------------------------------');
+                $output->writeln('----------------------------------');
+            } else {
+                $output->writeln('<error>No cache key found.</error>');
+            }
         }
 
         return Command::SUCCESS;
