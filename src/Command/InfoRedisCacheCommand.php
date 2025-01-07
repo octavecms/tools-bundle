@@ -3,6 +3,10 @@
 namespace Octave\ToolsBundle\Command;
 
 use Octave\ToolsBundle\Util\RedisHelper;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class InfoRedisCacheCommand extends Command
 {
