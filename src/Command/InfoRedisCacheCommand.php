@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class InfoRedisCacheCommand extends Command
 {
-    protected static $defaultName = 'octave:tools:info';
+    protected static $defaultName = 'octave:tools:cache-info';
 
     private RedisHelper $redisHelper;
 
@@ -38,16 +38,16 @@ class InfoRedisCacheCommand extends Command
         }
 
         foreach ($keys as $key) {
+            $output->writeln(sprintf('Hash: <info>%s</info>, Key: <info>%s</info>', $hash, $key));
             $cache = $this->redisHelper->get($hash, $key);
             if ($cache) {
-                $output->writeln(sprintf('Hash: <info>%s</info>, Key: <info>%s</info>', $hash, $key));
                 $output->writeln(sprintf('Expired: <info>%s</info>', $cache['expired']));
                 $output->writeln(sprintf('Count: <info>%s</info>', $cache['count']));
                 $output->writeln(sprintf('Length: <info>%s</info>', strlen($cache['content'])));
 
                 $output->writeln('----------------------------------');
             } else {
-                $output->writeln('<error>No cache key found.</error>');
+                $output->writeln(sprintf('<error>No cache found for key %s.</error>', $key));
             }
         }
 
