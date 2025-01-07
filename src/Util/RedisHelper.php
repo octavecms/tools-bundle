@@ -57,8 +57,12 @@ class RedisHelper
         }
     }
 
-    public function getKeysByHash(string $hash)
+    public function getKeysByHash(string $hash, $usePrefix = false)
     {
+        if ($usePrefix) {
+            $hash = $this->cachePrefix . ':' . $hash;
+        }
+
         return $this->redis->hGetAll($hash);
     }
 
