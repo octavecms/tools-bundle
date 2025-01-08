@@ -32,23 +32,30 @@ class InfoRedisCacheCommand extends Command
         $hash = $input->getArgument('hash');
         $key = $input->getArgument('key');
 
-        $keys = $key ? [$key] : $this->redisHelper->getKeysByHash($hash, true);
+        $keys = $this->redisHelper->getKeysByHash($hash, true);
+        if ($key) {
+            if (isset($keys[$key])) {
+                $keys = [$key => $keys[$key]];
+            } else {
+                $output->writeln('<error>No cache keys found.</error>');
+                return Command::FAILURE;
+            }
+        }
+
         if (empty($keys)) {
             $output->writeln('<error>No cache keys found.</error>');
         }
 
-        foreach ($keys as $key) {
-            $output->writeln(sprintf('Hash: <info>%s</info>, Key: <info>%s</info>', $hash, $key));
-            $cache = $this->redisHelper->get($hash, $key);
-            if ($cache) {
-                $output->writeln(sprintf('Expired: <info>%s</info>', $cache['expired']));
-                $output->writeln(sprintf('Count: <info>%s</info>', $cache['count']));
-                $output->writeln(sprintf('Length: <info>%s</info>', strlen($cache['content'])));
+        foreach ($keys as $key => $value) {
 
-                $output->writeln('----------------------------------');
-            } else {
-                $output->writeln(sprintf('<error>No cache found for key %s.</error>', $key));
-            }
+            $data = json_decode($value, true);
+
+            $output->writeln(sprintf('Hash: <info>%s</info>, Key: <info>%s</info>', $hash, $key));
+            $output->writeln(sprintf('Expired: <info>%s</info>', $data['expired']));
+            $output->writeln(sprintf('Count: <info>%s</info>', $data['count']));
+            $output->writeln(sprintf('Length: <info>%s</info>', strlen($data['content'])));
+
+            $output->writeln('----------------------------------');
         }
 
         return Command::SUCCESS;
