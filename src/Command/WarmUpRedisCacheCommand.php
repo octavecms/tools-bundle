@@ -39,6 +39,11 @@ class WarmUpRedisCacheCommand extends Command
         foreach ($hashes as $hash) {
             $keys = $this->redisHelper->getKeysByHash($hash);
             foreach ($keys as $key => $value) {
+
+                if ($output->isVerbose()) {
+                    $output->writeln(sprintf('Hash: %s, key: %s', $hash, $key));
+                }
+
                 $cacheData = json_decode($value, true);
 
                 if (!is_array($cacheData)) {
@@ -47,6 +52,10 @@ class WarmUpRedisCacheCommand extends Command
 
                 if (!array_key_exists('content', $cacheData) || !array_key_exists('expired', $cacheData) || !array_key_exists('count', $cacheData) || !array_key_exists('url', $cacheData)) {
                     continue;
+                }
+
+                if ($output->isVerbose()) {
+                    $output->writeln(sprintf('Expired: %s', $cacheData['expired']));
                 }
 
                 if (false === $cacheData['expired']) {
@@ -58,6 +67,11 @@ class WarmUpRedisCacheCommand extends Command
                 }
 
                 $url = $cacheData['url'];
+
+                if ($output->isVerbose()) {
+                    $output->writeln(sprintf('URL: %s', $url));
+                }
+
                 $parsedUrl = parse_url($url);
 
                 $params = [];
@@ -73,6 +87,9 @@ class WarmUpRedisCacheCommand extends Command
                 $response = $this->client->request('GET', $url);
 
                 $content = $cacheData['content'];
+                if ($output->isVerbose()) {
+                    $output->writeln(sprintf('Status code: %s', $response->getStatusCode()));
+                }
                 if (200 === $response->getStatusCode()) {
                     $content = $response->getContent();
                     $cacheData['expired'] = false;
