@@ -26,6 +26,8 @@ services:
     arguments:
       - '@octave.tools.redis.helper'
       - '@http_client'
+      - '%octave.tools.auth_username%'
+      - '%octave.tools.auth_password%'
     tags:
       - { name: console.command }
     public: true

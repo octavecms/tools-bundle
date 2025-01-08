@@ -17,10 +17,20 @@ class WarmUpRedisCacheCommand extends Command
     private RedisHelper $redisHelper;
     private HttpClientInterface $client;
 
-    public function __construct(RedisHelper $redisHelper, HttpClientInterface $client)
+    private string $authUsername;
+    private string $authPassword;
+
+    public function __construct(
+        RedisHelper $redisHelper,
+        HttpClientInterface $client,
+        string $authUsername,
+        string $authPassword
+    )
     {
         $this->redisHelper = $redisHelper;
         $this->client = $client;
+        $this->authUsername = $authUsername;
+        $this->authPassword = $authPassword;
         parent::__construct();
     }
 
@@ -83,8 +93,13 @@ class WarmUpRedisCacheCommand extends Command
                 $baseUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $parsedUrl['path'];
 
                 $url = $baseUrl . '?' . http_build_query($params);
+                $options = [];
 
-                $response = $this->client->request('GET', $url);
+                if ($this->authUsername && $this->authPassword) {
+                    $options['auth_basic'] = [$this->authUsername, $this->authPassword];
+                }
+
+                $response = $this->client->request('GET', $url, $options);
 
                 $content = $cacheData['content'];
                 if ($output->isVerbose()) {

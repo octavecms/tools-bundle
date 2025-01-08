@@ -24,6 +24,8 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('recaptcha_secret')->end()
                 ->scalarNode('cache_prefix')->end()
+                ->scalarNode('auth_username')->end()
+                ->scalarNode('auth_password')->end()
             ->end();
 
         return $treeBuilder;

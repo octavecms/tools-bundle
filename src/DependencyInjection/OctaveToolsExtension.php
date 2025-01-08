@@ -27,6 +27,8 @@ class OctaveToolsExtension extends Extension
 
         $container->setParameter('octave.tools.recaptcha_secret', $config['recaptcha_secret'] ?? null);
         $container->setParameter('octave.tools.cache_prefix', $config['cache_prefix'] ?? null);
+        $container->setParameter('octave.tools.auth_username', $config['auth_username'] ?? null);
+        $container->setParameter('octave.tools.auth_password', $config['auth_password'] ?? null);
 
         if ($config['cache_prefix'] ?? null) {
             $loader->load('cache.yml');
