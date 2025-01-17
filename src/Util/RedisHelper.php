@@ -46,6 +46,16 @@ class RedisHelper
             $this->set($hash, $key, $cacheData, false);
         }
     }
+
+    public function forceDelete(string $hash, bool $usePrefix = false): void
+    {
+        if ($usePrefix) {
+            $hash = $this->cachePrefix . ':' . $hash;
+        }
+
+        $this->redis->del($hash);
+    }
+
     public function flushAll($force = false)
     {
         foreach ($this->getAll() as $hash) {
