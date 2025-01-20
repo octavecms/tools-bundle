@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Tests\Controller\Generated;
+
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+class GeneratedControllerTest extends WebTestCase
+{
+    private $client;
+
+    public function setUp(): void
+    {
+        $this->client = static::createClient();
+    }
+
+    protected function assertGetRouteSuccess($path)
+    {
+        $this->assertGetRouteHasCode($path, 200);
+    }
+
+    protected function assertGetRouteHasCode($path, $code)
+    {
+        $this->client->request('GET', $path);
+        $this->assertEquals($code, $this->client->getResponse()->getStatusCode());
+    }
+
+{% for test in testMethods %}
+    public function {{ test.methodName }}(): void
+    {
+        $this->assertGetRouteSuccess('{{ test.routePath }}');
+    }
+
+{% endfor %}
+}

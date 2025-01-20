@@ -25,3 +25,13 @@ services:
         tags:
             - { name: console.command}
         public: true
+
+    octave.tools.generate.test.command:
+        class: Octave\ToolsBundle\Command\GenerateTestsCommand
+        arguments:
+            - '%kernel.project_dir%'
+            - '@router'
+            - '@twig'
+        tags:
+            - { name: console.command }
+        public: true
