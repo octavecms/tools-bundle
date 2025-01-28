@@ -11,7 +11,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class GenerateTestsCommand extends Command
 {
-    private const TEST_DIR = 'tests/Controller/Generated';
+    private const TEST_DIR = 'tests/Generated';
+    private const OPTION_NO_TEST = 'no_test';
 
     protected static $defaultName = 'octave:tools:generate-tests';
 
@@ -48,10 +49,9 @@ class GenerateTestsCommand extends Command
         foreach ($routes as $routeName => $route) {
             $controller = $route->getDefault('_controller');
 
-            if (!in_array('GET', $route->getMethods()) ||
-                $route->getOption('no_test') === true ||
+            if (($route->getMethods() && !in_array('GET', $route->getMethods())) ||
+                $route->getOption(self::OPTION_NO_TEST) === true ||
                 !$controller ||
-                !str_starts_with($controller, 'App\Controller') ||
                 count($route->compile()->getPathVariables()) > 0) {
                 continue;
             }
@@ -65,7 +65,10 @@ class GenerateTestsCommand extends Command
             $controllerName = str_replace('Controller', '', end($controllerParts));
             $actionName = $parts[1];
 
-            $methodName = sprintf('test%s%s', $controllerName, ucfirst($actionName));
+            $controllerName = preg_replace("/[^A-Za-z0-9 ]/", '', $controllerName);
+            $actionName = preg_replace("/[^A-Za-z0-9 ]/", '', $actionName);
+
+            $methodName = sprintf('test%s%s', ucfirst($controllerName), ucfirst($actionName));
 
             $testMethods[] = [
                 'methodName' => $methodName,
@@ -76,14 +79,14 @@ class GenerateTestsCommand extends Command
             $generatedTests++;
         }
 
-        $content = $this->twig->render('@OctaveTools/test/controller_test.html.twig', [
+        $content = $this->twig->render('@OctaveTools/test/controller_test.php.twig', [
             'testMethods' => $testMethods
         ]);
 
-        $testFilePath = sprintf('%s/GeneratedControllerTest.php', $testDir);
+        $testFilePath = sprintf('%s/DefaultControllerTest.php', $testDir);
         file_put_contents($testFilePath, $content);
 
-        $output->writeln(sprintf('Generated %d test methods in %s', $generatedTests, $testFilePath));
+        $output->writeln(sprintf('Generated <info>%d</info> test methods in %s', $generatedTests, $testFilePath));
 
         return Command::SUCCESS;
     }
