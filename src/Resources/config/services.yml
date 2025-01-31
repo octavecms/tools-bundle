@@ -35,3 +35,7 @@ services:
         tags:
             - { name: console.command }
         public: true
+
+    octave.tools.purge.cloudflare.cache.command:
+        class: Octave\ToolsBundle\Command\PurgeCloudflareCacheCommand
+        tags: [ 'console.command' ]
