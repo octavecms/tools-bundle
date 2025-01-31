@@ -38,4 +38,6 @@ services:
 
     octave.tools.purge.cloudflare.cache.command:
         class: Octave\ToolsBundle\Command\PurgeCloudflareCacheCommand
+        arguments:
+            $params: '@parameter_bag'
         tags: [ 'console.command' ]
