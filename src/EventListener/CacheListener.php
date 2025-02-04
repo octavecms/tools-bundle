@@ -232,7 +232,7 @@ class CacheListener implements EventSubscriberInterface
     private function getCacheKey(Request $request, array $options): string
     {
         $mobileCache = $options['mobile_cache'] ?? true;
-        $isMobile = $this->mobileDetector->isMobile() ? '_mobile' : '';
+        $isMobile = ($this->mobileDetector->isMobile() && !$this->mobileDetector->isTablet()) ? '_mobile' : '';
 
         if (!$mobileCache && $isMobile) {
             $isMobile = '';
