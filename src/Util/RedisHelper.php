@@ -2,15 +2,19 @@
 
 namespace Octave\ToolsBundle\Util;
 
+use Symfony\Component\Routing\RouterInterface;
+
 class RedisHelper
 {
     private \Redis $redis;
     private string $cachePrefix;
+    private RouterInterface $router;
 
-    public function __construct(\Redis $redis, string $cachePrefix)
+    public function __construct(\Redis $redis, string $cachePrefix, RouterInterface $router)
     {
         $this->redis = $redis;
         $this->cachePrefix = $cachePrefix;
+        $this->router = $router;
     }
 
     public function get(string $hash, string $key, bool $usePrefix = true)
@@ -36,6 +40,13 @@ class RedisHelper
     {
         if ($usePrefix) {
             $hash = $this->cachePrefix . ':' . $hash;
+        }
+
+        $routeConfig = $this->getRouteConfig($hash);
+
+        if ($this->shouldDeleteCache($routeConfig)) {
+            $this->forceDelete($hash);
+            return;
         }
 
         $keys = $this->getKeysByHash($hash);
@@ -79,5 +90,27 @@ class RedisHelper
     public function getAll()
     {
         return $this->redis->keys($this->cachePrefix . '*');
+    }
+
+    protected function getRouteConfig(string $routeName): ?array
+    {
+        $routeCollection = $this->router->getRouteCollection();
+
+        foreach ($routeCollection as $name => $route) {
+            if (str_ends_with($name, $routeName)) {
+                return $route->getOptions();
+            }
+        }
+
+        return null;
+    }
+
+    protected function shouldDeleteCache(?array $config): bool
+    {
+        if (!$config) {
+            return false;
+        }
+
+        return isset($config['cache_expire']) && $config['cache_expire'] === false;
     }
 }

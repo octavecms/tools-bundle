@@ -24,7 +24,6 @@ class CacheAwareAdminCompiler implements CompilerPassInterface
 
             if (class_exists($class) && new $class() instanceof CacheAwareAdminInterface) {
                 $definition->addMethodCall('setRedisHelper', [new Reference('octave.tools.redis.helper')]);
-                $definition->addMethodCall('setRouter', [new Reference('router')]);
             }
         }
     }

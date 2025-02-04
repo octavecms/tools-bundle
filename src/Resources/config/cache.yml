@@ -12,6 +12,7 @@ services:
     arguments:
       - '@Redis'
       - '%octave.tools.cache_prefix%'
+      - '@router'
 
   octave.tools.clear.cache.command:
     class: Octave\ToolsBundle\Command\ClearRedisCacheCommand
