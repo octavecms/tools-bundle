@@ -38,11 +38,11 @@ class RedisHelper
 
     public function remove(string $hash, $usePrefix = false)
     {
+        $routeConfig = $this->getRouteConfig($hash);
+
         if ($usePrefix) {
             $hash = $this->cachePrefix . ':' . $hash;
         }
-
-        $routeConfig = $this->getRouteConfig($hash);
 
         if ($this->shouldDeleteCache($routeConfig)) {
             $this->forceDelete($hash);
