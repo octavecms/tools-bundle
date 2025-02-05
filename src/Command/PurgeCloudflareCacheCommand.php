@@ -46,17 +46,17 @@ class PurgeCloudflareCacheCommand extends Command
             $content = $response->toArray();
 
             if ($statusCode === 200) {
-                $logger->info('Cache purged successfully!');
-                $logger->info(json_encode($content, JSON_PRETTY_PRINT));
+                $output->writeln('Cache purged successfully!');
+                $output->writeln(json_encode($content, JSON_PRETTY_PRINT));
                 return Command::SUCCESS;
             } else {
-                $logger->error('Error purging cache. Status code: ' . $statusCode);
-                $logger->error($response->getContent());
+                $output->writeln('Error purging cache. Status code: ' . $statusCode);
+                $output->writeln($response->getContent());
                 return Command::FAILURE;
             }
 
         } catch (\Exception $e) {
-            $logger->error('An error occurred during the request: ' . $e->getMessage());
+            $output->writeln('An error occurred during the request: ' . $e->getMessage());
             return Command::FAILURE;
         }
     }
